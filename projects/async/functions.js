@@ -31,7 +31,20 @@ delayPromise(3);
  Пример:
    loadAndSortTowns().then(towns => console.log(towns)) // должна вывести в консоль отсортированный массив городов
  */
-// function loadAndSortTowns() {
-// }
-//
-// export { delayPromise, loadAndSortTowns };
+function loadAndSortTowns() {
+    return new Promise(function (resolve, reject) {
+        fetch('https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json')
+          .then (resp => {
+            return resp.json();
+        })
+          .then(towns => {
+              let sortTowns = towns.sort((a, b) => {
+                  return a.name > b.name ? 1 : -1;
+              })
+              resolve(sortTowns);
+          })
+          .catch((e) => reject(e));
+    })
+}
+
+export { delayPromise, loadAndSortTowns };
